@@ -1,0 +1,16 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+*.cache
+*.log
+*.tmp
+*.temp
+*.pid
+*.seed
+*.pid.lock
+node_modules/
+.npm
+.eslintcache
