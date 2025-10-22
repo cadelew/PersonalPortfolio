@@ -32,7 +32,11 @@ jobs:
       run: dotnet publish -c Release -o dist
     
     - name: Copy wwwroot contents
-      run: cp -r dist/wwwroot/* dist/ && rm -rf dist/wwwroot
+      run: |
+        if [ -d "dist/wwwroot" ]; then
+          cp -r dist/wwwroot/* dist/
+          rm -rf dist/wwwroot
+        fi
     
     - name: List dist contents
       run: ls -la dist/
