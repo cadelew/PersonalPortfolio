@@ -1,0 +1,62 @@
+@page "/"
+@using PokerPortfolio.Models
+@inject NavigationManager NavigationManager
+
+<div class="landing-screen">
+    <div class="landing-content">
+        <h1 class="insert-coin-text">Insert Coin</h1>
+        <p class="welcome-text">Welcome to Caden's Table</p>
+        <button class="pixel-button" @onclick="DealMeIn">
+            Deal Me In
+        </button>
+    </div>
+</div>
+
+<style>
+    .landing-screen {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(45deg, #0f3d1a, #2d1b0e);
+    }
+
+    .landing-content {
+        text-align: center;
+    }
+
+    .insert-coin-text {
+        font-size: 24px;
+        color: #ffcc00;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 0px #2d1b0e;
+    }
+
+    .welcome-text {
+        font-size: 12px;
+        color: #f5deb3;
+        margin-bottom: 30px;
+    }
+
+    .pixel-button {
+        background-color: #ffcc00;
+        color: #0f3d1a;
+        border: 3px solid #2d1b0e;
+        padding: 12px 24px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.1s ease;
+    }
+
+    .pixel-button:hover {
+        background-color: #f5deb3;
+        border-color: #ffcc00;
+    }
+</style>
+
+@code {
+    private void DealMeIn()
+    {
+        NavigationManager.NavigateTo("/table");
+    }
+}

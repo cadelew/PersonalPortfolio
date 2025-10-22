@@ -1,0 +1,162 @@
+@page "/table"
+@using PokerPortfolio.Models
+@using PokerPortfolio.Services
+@inject NavigationManager NavigationManager
+@inject GameStateService GameState
+
+<div
+    style="height: 100vh; background-image: url('/images/forestbackground2.png'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative;">
+
+    <!-- Poker Table - Bottom 60% -->
+    <div
+        style="position: absolute; bottom: 0; left: 0; width: 100%; height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0f3d1a; border: 8px solid #8B4513; box-shadow: inset 0 0 30px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.4); z-index: 2;">
+
+        <!-- Felt texture overlay -->
+        <div
+            style="position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px; background: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px); pointer-events: none;">
+        </div>
+
+        <!-- Left side stack: Dialogue (top) + Instructions (below) -->
+        <div
+            style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 12; display: flex; flex-direction: column; gap: 12px; max-width: 320px;">
+            <!-- Dealer Dialogue -->
+            <div
+                style="padding: 12px 16px; text-align: left; border-radius: 6px; border: 2px solid #ffcc00; background: #2d1b0e; color: #ffcc00; font-size: 10px; box-shadow: 4px 4px 0px rgba(0,0,0,0.3);">
+                @GameState.DealerMessage
+            </div>
+            <!-- Instructions Panel -->
+            <div
+                style="padding: 12px 16px; border-radius: 6px; border: 2px solid #ffcc00; background: #1b1009; color: #f5deb3; font-size: 10px; box-shadow: 4px 4px 0px rgba(0,0,0,0.3);">
+                <div style="font-weight: bold; color: #ffcc00; margin-bottom: 6px;">TABLE CONTROLS</div>
+                <ul style="margin: 0; padding-left: 16px; line-height: 1.4;">
+                    <li><span style="color:#ffcc00;">Check</span>: deal flop → turn → river</li>
+                    <li><span style="color:#ffcc00;">Fold</span>: end hand</li>
+                    <li><span style="color:#ffcc00;">All In</span>: jump to river</li>
+                    <li><span style="color:#ffcc00;">View Hand</span>: About + Contact</li>
+                    <li><span style="color:#ffcc00;">View Cards</span>: Projects (after dealing)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Community Cards -->
+        <div style="display: flex; gap: 12px; margin-bottom: 20px; position: relative; z-index: 10;">
+            @for (int i = 0; i < 5; i++)
+            {
+                <div
+                    style="width: 72px; height: 104px; border: 4px solid #ffcc00; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 4px 4px 8px rgba(0,0,0,0.3); opacity: @(i < GameState.CardsDealt ? "1" : "0.3"); overflow: hidden;">
+                    @if (i < GameState.CardsDealt)
+                    {
+                        <img src="/images/BackOfCard.png" alt="Card"
+                            style="width: 64px; height: 96px; object-fit: cover; image-rendering: pixelated;" />
+                    }
+                </div>
+            }
+        </div>
+
+        @if (GameState.CardsDealt > 0)
+        {
+            <button
+                style="margin-bottom: 32px; padding: 8px 16px; border: 2px solid #3b82f6; border-radius: 4px; background: #1e40af; color: white; font-size: 12px; cursor: pointer; position: relative; z-index: 10;"
+                @onclick="ViewCards">
+                VIEW CARDS (PROJECTS)
+            </button>
+        }
+
+        <!-- Player Cards -->
+        <div style="display: flex; gap: 16px; margin-bottom: 8px; position: relative; z-index: 10;">
+            <div
+                style="width: 88px; height: 120px; border: 4px solid #ffcc00; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 4px 4px 8px rgba(0,0,0,0.3); overflow: hidden;">
+                <img src="/images/BackOfCard.png" alt="Card"
+                    style="width: 80px; height: 112px; object-fit: cover; image-rendering: pixelated;" />
+            </div>
+            <div
+                style="width: 88px; height: 120px; border: 4px solid #ffcc00; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 4px 4px 8px rgba(0,0,0,0.3); overflow: hidden;">
+                <img src="/images/BackOfCard.png" alt="Card"
+                    style="width: 80px; height: 112px; object-fit: cover; image-rendering: pixelated;" />
+            </div>
+        </div>
+
+        <!-- Action Panel - Right side over table (smaller) -->
+        <div
+            style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); padding: 10px; border: 3px solid #ffcc00; border-radius: 10px; background: #2d1b0e; box-shadow: 0 8px 16px rgba(0,0,0,0.4); z-index: 12; display: flex; flex-direction: column; gap: 8px;">
+            <button
+                style="padding: 8px 14px; border: 2px solid #10b981; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.2s ease; box-shadow: 2px 2px 4px rgba(0,0,0,0.3); background: #059669; color: white;"
+                @onclick="Check">
+                CHECK
+            </button>
+            <button
+                style="padding: 8px 14px; border: 2px solid #ef4444; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.2s ease; box-shadow: 2px 2px 4px rgba(0,0,0,0.3); background: #dc2626; color: white;"
+                @onclick="Fold">
+                FOLD
+            </button>
+            <button
+                style="padding: 8px 14px; border: 2px solid #f59e0b; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.2s ease; box-shadow: 2px 2px 4px rgba(0,0,0,0.3); background: #d97706; color: white;"
+                @onclick="AllIn">
+                ALL IN
+            </button>
+            <button
+                style="padding: 8px 12px; border: 2px solid #3b82f6; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.2s ease; box-shadow: 2px 2px 4px rgba(0,0,0,0.3); background: #1e40af; color: white;"
+                @onclick="ViewHand">
+                VIEW HAND (ABOUT + CONTACT)
+            </button>
+        </div>
+
+        <!-- Dealer attached to table, rendered last for overlap -->
+        <div
+            style="position: absolute; top: -285px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 20;">
+            <div
+                style="width: 280px; height: 360px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+                <img src="/images/dealer1.png" alt="Dealer"
+                    style="width: 220px; height: 300px; image-rendering: pixelated; filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.4)); object-fit: contain; position: relative; z-index: 30;" />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    private void Check()
+    {
+        GameState.UpdateMessage("Let's see what you've got, partner.");
+        if (GameState.CardsDealt == 0)
+        {
+            GameState.DealCards(3);
+        }
+        else if (GameState.CardsDealt == 3)
+        {
+            GameState.DealCards(4);
+        }
+        else if (GameState.CardsDealt == 4)
+        {
+            GameState.DealCards(5);
+        }
+        else
+        {
+            GameState.DealCards(5);
+        }
+    }
+
+    private void Fold()
+    {
+        GameState.UpdateMessage("Walking away? Come back anytime.");
+        GameState.DealCards(5);
+    }
+
+    private void AllIn()
+    {
+        GameState.UpdateMessage("All in! Bold move, partner.");
+        GameState.DealCards(5);
+    }
+
+    private void ViewHand()
+    {
+        GameState.UpdateMessage("Strong hand — looks like a full stack!");
+        NavigationManager.NavigateTo("/hand");
+    }
+
+    private void ViewCards()
+    {
+        GameState.UpdateMessage("Impressive spread. You code like you mean it.");
+        NavigationManager.NavigateTo("/projects");
+    }
+}

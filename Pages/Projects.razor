@@ -1,0 +1,116 @@
+@page "/projects"
+@using PokerPortfolio.Models
+@using PokerPortfolio.Services
+@inject NavigationManager NavigationManager
+@inject GameStateService GameState
+
+<div class="projects-overlay">
+    <div class="projects-container">
+        <div class="projects-cards" style="display:flex;gap:30px;margin-bottom:40px;flex-wrap:wrap;justify-content:center;">
+            @{
+                var projects = GetProjects();
+            }
+            @for (var i = 0; i < projects.Count; i++)
+            {
+                var project = projects[i];
+                var locked = i >= GameState.CardsDealt;
+                <div class="project-card" style="position:relative;width:300px;background:white;border:8px solid black;border-radius:16px;padding:20px;box-shadow:8px 8px 0px rgba(0,0,0,0.8);">
+                    <div class="card-corner top-left" style="position:absolute;top:8px;left:8px;font-size:20px;font-weight:bold;color:black;">@project.Rank @project.Suit</div>
+                    <div class="card-corner bottom-right" style="position:absolute;bottom:8px;right:8px;font-size:20px;font-weight:bold;color:black;transform:rotate(180deg);">@project.Rank @project.Suit</div>
+
+                    <div class="card-content">
+                        <div class="project-icon" style="font-size:40px;text-align:center;margin-bottom:15px;">@project.Icon</div>
+                        <h3 class="project-title" style="font-size:16px;margin-bottom:10px;border-bottom:4px solid black;padding-bottom:5px;">@project.Title</h3>
+                        <p class="project-description" style="font-size:11px;margin-bottom:15px;line-height:1.4;">@project.Description</p>
+
+                        <div class="tech-stack" style="margin-bottom:20px;">
+                            <div class="tech-label" style="font-size:10px;font-weight:bold;margin-bottom:5px;">TECH STACK</div>
+                            <div class="tech-bar" style="background:#2d1b0e;border:2px solid black;padding:8px;color:#ffcc00;font-size:10px;text-align:center;">@project.TechStack</div>
+                        </div>
+
+                        <a href="@project.GitHubUrl" target="_blank" class="github-link" style="display:block;width:100%;text-align:center;padding:10px;background:black;border:2px solid #666;color:white;font-size:10px;text-decoration:none;">VIEW ON GITHUB →</a>
+                    </div>
+
+                    @if (locked)
+                    {
+                        <div style="position:absolute;inset:0;background:#0b0b0b;color:#ffcc00;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:8px;pointer-events:all;cursor:not-allowed;">
+                            <div style="padding:10px 12px;border:2px solid #ffcc00;background:#2d1b0e;box-shadow:4px 4px 0 rgba(0,0,0,0.3);font-size:11px;">
+                                Locked — deal more cards to reveal
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        @if (GameState.CardsDealt < 5)
+        {
+            <div style="margin-bottom:16px;color:#ffcc00;background:#2d1b0e;border:2px solid #ffcc00;padding:8px 12px;box-shadow:4px 4px 0 rgba(0,0,0,0.3);font-size:12px;">
+                @("Reveal progress: " + GameState.CardsDealt + "/5 projects unlocked. Deal more cards!")
+            </div>
+        }
+
+        <button class="pixel-button back-to-table-btn" @onclick="BackToTable" style="background-color:#ffcc00;color:#0f3d1a;border:3px solid #2d1b0e;padding:12px 24px;font-size:14px;cursor:pointer;">
+            Back to Table
+        </button>
+    </div>
+</div>
+
+@code {
+    private List<Project> GetProjects()
+    {
+        return new List<Project>
+        {
+            new Project
+            {
+                Title = "Crypto Market Making Engine",
+                Description = "Market making engine implementing Avellaneda-Stoikov model with EWMA volatility calculator on real-life market data from Binance Websocket",
+                TechStack = "C++ / Python / Postgres / FastAPI",
+                GitHubUrl = "https://github.com/cadelew/Crypto-Market-Making-Engine",
+                Rank = "Q",
+                Suit = "♠"
+            },
+            new Project
+            {
+                Title = "CS @ SJDLS",
+                Description = "Full-stack educational website for computer science students at SJDLS. Includes dynamic quiz generation, user checklists, and resources for students",
+                TechStack = "Javascript / React / Node.js / Express / MongoDB",
+                GitHubUrl = "https://github.com/cadelew/cs-at-sjdls",
+                Rank = "J",
+                Suit = "♣"
+            },
+            new Project
+            {
+                Title = "Coming Soon",
+                Description = "More projects coming soon!",
+                TechStack = "Coming Soon",
+                GitHubUrl = "https://github.com/cadelew/",
+                Rank = "10",
+                Suit = "♥"
+            },
+            new Project
+            {
+                Title = "Coming Soon",
+                Description = "More projects coming soon!",
+                TechStack = "Coming Soon",
+                GitHubUrl = "https://github.com/cadelew/",      
+                Rank = "9",
+                Suit = "♦"
+            },
+            new Project
+            {
+                Title = "Coming Soon",
+                Description = "More projects coming soon!",
+                TechStack = "Coming Soon",
+                GitHubUrl = "https://github.com/cadelew/",      
+                Rank = "8",
+                Suit = "♦"
+            }
+        };
+    }
+
+    private void BackToTable()
+    {
+        NavigationManager.NavigateTo("/table");
+    }
+}
