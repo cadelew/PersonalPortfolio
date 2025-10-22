@@ -71,6 +71,20 @@
     <button class="pixel-button back-button" @onclick="BackToTable">
         Back to Table
     </button>
+
+    <!-- Retro Effects -->
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9996; background: radial-gradient(ellipse at center, transparent 0%, transparent 40%, rgba(0,0,0,0.6) 100%);">
+    </div>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9997; background: transparent; animation: glitch 2s infinite;">
+    </div>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998; background: rgba(255,255,255,0.02); animation: flicker 0.15s infinite linear;">
+    </div>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px); animation: scanline 8s linear infinite;">
+    </div>
 </div>
 
 <style>
@@ -188,17 +202,28 @@
     }
 
     .back-button {
-        background-color: #ffcc00;
-        color: #0f3d1a;
-        border: 3px solid #2d1b0e;
+        background-color: #1a8a1a;
+        color: #ffcc00;
+        border: 2px solid #ffcc00;
         padding: 12px 24px;
         font-size: 14px;
         cursor: pointer;
+        font-family: 'Press Start 2P', cursive;
+        box-shadow: 3px 3px 0px #8B4513;
+        border-radius: 4px;
+        transition: all 0.15s ease;
+        transform: scale(1);
     }
 
     .back-button:hover {
-        background-color: #f5deb3;
-        border-color: #ffcc00;
+        background-color: #2a9a2a;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 5px 5px 0px #8B4513;
+    }
+
+    .back-button:active {
+        transform: translateY(1px) scale(0.98);
+        box-shadow: 2px 2px 0px #8B4513;
     }
 </style>
 

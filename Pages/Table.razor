@@ -3,9 +3,25 @@
 @using PokerPortfolio.Services
 @inject NavigationManager NavigationManager
 @inject GameStateService GameState
+@implements IDisposable
 
 <div
     style="height: 100vh; background-image: url('/images/forestbackground2.png'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative;">
+
+    <!-- Retro Effects -->
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9996; background: radial-gradient(ellipse at center, transparent 0%, transparent 40%, rgba(0,0,0,0.6) 100%);">
+    </div>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9997; background: transparent; animation: glitch 2s infinite;">
+    </div>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998; background: rgba(255,255,255,0.02); animation: flicker 0.15s infinite linear;">
+    </div>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px); animation: scanline 8s linear infinite;">
+    </div>
+
 
     <!-- Poker Table - Bottom 60% -->
     <div
@@ -27,13 +43,17 @@
             <!-- Instructions Panel -->
             <div
                 style="padding: 12px 16px; border-radius: 6px; border: 2px solid #ffcc00; background: #1b1009; color: #f5deb3; font-size: 10px; box-shadow: 4px 4px 0px rgba(0,0,0,0.3);">
-                <div style="font-weight: bold; color: #ffcc00; margin-bottom: 6px;">TABLE CONTROLS</div>
+                <div style="font-weight: bold; color: #ffcc00; margin-bottom: 6px;">HOW TO PLAY</div>
+                <div style="margin-bottom: 8px; color: #ffcc00; font-weight: bold;">UNLOCK PROJECTS:</div>
                 <ul style="margin: 0; padding-left: 16px; line-height: 1.4;">
-                    <li><span style="color:#ffcc00;">Check</span>: deal flop → turn → river</li>
-                    <li><span style="color:#ffcc00;">Fold</span>: end hand</li>
-                    <li><span style="color:#ffcc00;">All In</span>: jump to river</li>
+                    <li><span style="color:#ffcc00;">Check</span>: Deal 1 or 3 cards → 1 or 3 projects</li>
+                    <li><span style="color:#ffcc00;">Fold</span>: Deal all 5 cards → 5 projects</li>
+                    <li><span style="color:#ffcc00;">All In</span>: Deal all 5 cards → 5 projects</li>
+                </ul>
+                <div style="margin: 8px 0 6px 0; color: #ffcc00; font-weight: bold;">OTHER ACTIONS:</div>
+                <ul style="margin: 0; padding-left: 16px; line-height: 1.4;">
                     <li><span style="color:#ffcc00;">View Hand</span>: About + Contact</li>
-                    <li><span style="color:#ffcc00;">View Cards</span>: Projects (after dealing)</li>
+                    <li><span style="color:#ffcc00;">View Cards</span>: See Projects (after dealing)</li>
                 </ul>
             </div>
         </div>
@@ -55,8 +75,8 @@
 
         @if (GameState.CardsDealt > 0)
         {
-            <button
-                style="margin-bottom: 32px; padding: 8px 16px; border: 2px solid #3b82f6; border-radius: 4px; background: #1e40af; color: white; font-size: 12px; cursor: pointer; position: relative; z-index: 10;"
+            <button class="pixel-button viewcards-button"
+                style="margin-bottom: 32px; padding: 8px 16px; border: 2px solid #ffcc00; border-radius: 4px; background: #1a3a8a; color: #ffcc00; font-size: 12px; cursor: pointer; position: relative; z-index: 10; font-family: 'Press Start 2P', cursive; box-shadow: 3px 3px 0px #8B4513; transition: all 0.15s ease; transform: scale(1);"
                 @onclick="ViewCards">
                 VIEW CARDS (PROJECTS)
             </button>
@@ -79,31 +99,47 @@
         <!-- Action Panel - Right side over table (smaller) -->
         <div
             style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); padding: 10px; border: 3px solid #ffcc00; border-radius: 10px; background: #2d1b0e; box-shadow: 0 8px 16px rgba(0,0,0,0.4); z-index: 12; display: flex; flex-direction: column; gap: 8px;">
-            <button
-                style="padding: 8px 14px; border: 2px solid #10b981; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.2s ease; box-shadow: 2px 2px 4px rgba(0,0,0,0.3); background: #059669; color: white;"
+            <button class="pixel-button check-button"
+                style="padding: 8px 14px; border: 2px solid #ffcc00; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.15s ease; box-shadow: 3px 3px 0px #8B4513; background: #1a8a1a; color: #ffcc00; font-family: 'Press Start 2P', cursive; transform: scale(1);"
                 @onclick="Check">
                 CHECK
             </button>
-            <button
-                style="padding: 8px 14px; border: 2px solid #ef4444; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.2s ease; box-shadow: 2px 2px 4px rgba(0,0,0,0.3); background: #dc2626; color: white;"
+            <button class="pixel-button fold-button"
+                style="padding: 8px 14px; border: 2px solid #ffcc00; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.15s ease; box-shadow: 3px 3px 0px #8B4513; background: #8a1a1a; color: #ffcc00; font-family: 'Press Start 2P', cursive; transform: scale(1);"
                 @onclick="Fold">
                 FOLD
             </button>
-            <button
-                style="padding: 8px 14px; border: 2px solid #f59e0b; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.2s ease; box-shadow: 2px 2px 4px rgba(0,0,0,0.3); background: #d97706; color: white;"
+            <button class="pixel-button allin-button"
+                style="padding: 8px 14px; border: 2px solid #ffcc00; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.15s ease; box-shadow: 3px 3px 0px #8B4513; background: #8a5a1a; color: #ffcc00; font-family: 'Press Start 2P', cursive; transform: scale(1);"
                 @onclick="AllIn">
                 ALL IN
             </button>
-            <button
-                style="padding: 8px 12px; border: 2px solid #3b82f6; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.2s ease; box-shadow: 2px 2px 4px rgba(0,0,0,0.3); background: #1e40af; color: white;"
+            <button class="pixel-button viewhand-button"
+                style="padding: 8px 12px; border: 2px solid #ffcc00; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; transition: all 0.15s ease; box-shadow: 3px 3px 0px #8B4513; background: #1a3a8a; color: #ffcc00; font-family: 'Press Start 2P', cursive; transform: scale(1);"
                 @onclick="ViewHand">
                 VIEW HAND (ABOUT + CONTACT)
             </button>
         </div>
 
+        <!-- Left side text: Caden Lewis -->
+        <div style="position: absolute; left: 50px; top: -150px; text-align: center; z-index: 25;">
+            <div style="color: #ffcc00; font-size: 36px; text-shadow: 3px 3px 0px rgba(0,0,0,0.8); line-height: 1.1;">
+                @leftText
+            </div>
+        </div>
+
+        <!-- Right side text: EECS AT Berkeley -->
+        <div style="position: absolute; right: 50px; top: -150px; text-align: center; z-index: 25;">
+            <div style="color: #ffcc00; font-size: 36px; text-shadow: 3px 3px 0px rgba(0,0,0,0.8); line-height: 1.1;">
+                <div>@rightTextLine1</div>
+                <div>@rightTextLine2</div>
+            </div>
+        </div>
+
         <!-- Dealer attached to table, rendered last for overlap -->
         <div
             style="position: absolute; top: -285px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 20;">
+
             <div
                 style="width: 280px; height: 360px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
                 <img src="/images/dealer1.png" alt="Dealer"
@@ -114,7 +150,114 @@
     </div>
 </div>
 
+<style>
+    .pixel-button {
+        transition: all 0.15s ease !important;
+        transform: scale(1) !important;
+    }
+
+    .pixel-button:hover {
+        transform: translateY(-2px) scale(1.05) !important;
+        box-shadow: 5px 5px 0px #8B4513 !important;
+    }
+
+    .pixel-button:active {
+        transform: translateY(1px) scale(0.98) !important;
+        box-shadow: 2px 2px 0px #8B4513 !important;
+    }
+
+    /* Specific button styles to ensure hover effects work */
+    .check-button:hover {
+        transform: translateY(-2px) scale(1.05) !important;
+        box-shadow: 5px 5px 0px #8B4513 !important;
+    }
+
+    .fold-button:hover {
+        transform: translateY(-2px) scale(1.05) !important;
+        box-shadow: 5px 5px 0px #8B4513 !important;
+    }
+
+    .allin-button:hover {
+        transform: translateY(-2px) scale(1.05) !important;
+        box-shadow: 5px 5px 0px #8B4513 !important;
+    }
+
+    .viewhand-button:hover {
+        transform: translateY(-2px) scale(1.05) !important;
+        box-shadow: 5px 5px 0px #8B4513 !important;
+    }
+
+    .viewcards-button:hover {
+        transform: translateY(-2px) scale(1.05) !important;
+        box-shadow: 5px 5px 0px #8B4513 !important;
+    }
+</style>
+
 @code {
+    private string leftText = "";
+    private string rightTextLine1 = "";
+    private string rightTextLine2 = "";
+    private string fullLeftText = "CADEN LEWIS";
+    private string fullRightLine1 = "EECS AT";
+    private string fullRightLine2 = "BERKELEY";
+    private int leftIndex = 0;
+    private int rightIndex1 = 0;
+    private int rightIndex2 = 0;
+
+    private Timer? typewriterTimer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // If typewriter is already completed, set the final text immediately
+        if (GameState.TypewriterCompleted)
+        {
+            leftText = fullLeftText;
+            rightTextLine1 = fullRightLine1;
+            rightTextLine2 = fullRightLine2;
+        }
+        else
+        {
+            // Start typewriter effect after a short delay
+            await Task.Delay(1000);
+            typewriterTimer = new Timer(UpdateTypewriter, null, 0, 150);
+        }
+    }
+
+    private void UpdateTypewriter(object? state)
+    {
+        // Type left text first
+        if (leftIndex < fullLeftText.Length)
+        {
+            leftText += fullLeftText[leftIndex];
+            leftIndex++;
+        }
+        // Then type right text line 1
+        else if (rightIndex1 < fullRightLine1.Length)
+        {
+            rightTextLine1 += fullRightLine1[rightIndex1];
+            rightIndex1++;
+        }
+        // Then type right text line 2
+        else if (rightIndex2 < fullRightLine2.Length)
+        {
+            rightTextLine2 += fullRightLine2[rightIndex2];
+            rightIndex2++;
+        }
+        else
+        {
+            // All text is done, mark as completed and stop the timer
+            GameState.TypewriterCompleted = true;
+            typewriterTimer?.Dispose();
+            return;
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        typewriterTimer?.Dispose();
+    }
     private void Check()
     {
         GameState.UpdateMessage("Let's see what you've got, partner.");

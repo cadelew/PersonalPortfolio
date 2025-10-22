@@ -6,9 +6,32 @@
     <div class="landing-content">
         <h1 class="insert-coin-text">Insert Coin</h1>
         <p class="welcome-text">Welcome to Caden's Table</p>
+
+        <!-- Poker Chips Horizontal -->
+        <div class="chip-row @(isAnimating ? "scatter" : "")">
+            <img src="/images/BlackChip.png" alt="Black Chip" class="poker-chip" />
+            <img src="/images/RedChip.png" alt="Red Chip" class="poker-chip" />
+            <img src="/images/BlueChip.png" alt="Blue Chip" class="poker-chip" />
+            <img src="/images/WhiteChip.png" alt="White Chip" class="poker-chip" />
+        </div>
+
         <button class="pixel-button" @onclick="DealMeIn">
             Deal Me In
         </button>
+    </div>
+
+    <!-- Retro Effects -->
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9996; background: radial-gradient(ellipse at center, transparent 0%, transparent 40%, rgba(0,0,0,0.6) 100%);">
+    </div>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9997; background: transparent; animation: glitch 2s infinite;">
+    </div>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998; background: rgba(255,255,255,0.02); animation: flicker 0.15s infinite linear;">
+    </div>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px); animation: scanline 8s linear infinite;">
     </div>
 </div>
 
@@ -39,24 +62,66 @@
     }
 
     .pixel-button {
-        background-color: #ffcc00;
-        color: #0f3d1a;
-        border: 3px solid #2d1b0e;
+        background-color: #1a8a1a;
+        color: #ffcc00;
+        border: 2px solid #ffcc00;
         padding: 12px 24px;
         font-size: 14px;
         cursor: pointer;
-        transition: all 0.1s ease;
+        transition: all 0.15s ease;
+        font-family: 'Press Start 2P', cursive;
+        box-shadow: 3px 3px 0px #8B4513;
+        border-radius: 4px;
+        transform: scale(1);
     }
 
     .pixel-button:hover {
-        background-color: #f5deb3;
-        border-color: #ffcc00;
+        background-color: #2a9a2a;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 5px 5px 0px #8B4513;
+    }
+
+    .pixel-button:active {
+        transform: translateY(1px) scale(0.98);
+        box-shadow: 2px 2px 0px #8B4513;
+    }
+
+    .chip-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+    }
+
+    .poker-chip {
+        width: 50px;
+        height: 50px;
+        image-rendering: pixelated;
+        transition: transform 0.3s ease;
+    }
+
+    .poker-chip:hover {
+        transform: translateY(-5px) scale(1.1);
     }
 </style>
 
 @code {
-    private void DealMeIn()
+    private bool isAnimating = false;
+
+    private async Task DealMeIn()
     {
+        if (isAnimating) return;
+
+        isAnimating = true;
+
+        // Trigger chip scatter animation
+        await InvokeAsync(StateHasChanged);
+
+        // Wait for animation to complete
+        await Task.Delay(800);
+
+        // Navigate to table
         NavigationManager.NavigateTo("/table");
     }
 }

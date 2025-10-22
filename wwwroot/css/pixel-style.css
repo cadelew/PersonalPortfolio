@@ -47,6 +47,182 @@
     100% { transform: translateY(100%); }
 }
 
+@keyframes flicker {
+    0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+        opacity: 0.99;
+        filter: brightness(100%) contrast(100%);
+    }
+    20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+        opacity: 0.4;
+        filter: brightness(150%) contrast(120%);
+    }
+}
+
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+        filter: hue-rotate(0deg);
+    }
+    10% {
+        transform: translate(-2px, 2px);
+        filter: hue-rotate(90deg);
+    }
+    20% {
+        transform: translate(-2px, -2px);
+        filter: hue-rotate(180deg);
+    }
+    30% {
+        transform: translate(2px, 2px);
+        filter: hue-rotate(270deg);
+    }
+    40% {
+        transform: translate(2px, -2px);
+        filter: hue-rotate(360deg);
+    }
+    50% {
+        transform: translate(-2px, 2px);
+        filter: hue-rotate(180deg);
+    }
+    60% {
+        transform: translate(-2px, -2px);
+        filter: hue-rotate(270deg);
+    }
+    70% {
+        transform: translate(2px, 2px);
+        filter: hue-rotate(360deg);
+    }
+    80% {
+        transform: translate(-2px, -2px);
+        filter: hue-rotate(180deg);
+    }
+    90% {
+        transform: translate(2px, 2px);
+        filter: hue-rotate(270deg);
+    }
+    100% {
+        transform: translate(0);
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes scatter1 {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-150px) translateY(-100px) rotate(-180deg);
+        opacity: 0;
+    }
+}
+
+@keyframes scatter2 {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-50px) translateY(-150px) rotate(-90deg);
+        opacity: 0;
+    }
+}
+
+@keyframes scatter3 {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(50px) translateY(-150px) rotate(90deg);
+        opacity: 0;
+    }
+}
+
+@keyframes scatter4 {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(150px) translateY(-100px) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+/* CRT Scanline Effect */
+.crt-scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.25) 0px,
+        rgba(0,0,0,0.25) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    animation: scanline 8s linear infinite;
+}
+
+/* Screen Flicker Effect */
+.screen-flicker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    background: transparent;
+    animation: flicker 0.15s infinite linear;
+}
+
+/* Screen Glitch Effect */
+.screen-glitch {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9997;
+    background: transparent;
+    animation: glitch 2s infinite;
+}
+
+/* Vignette Effect */
+.vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9996;
+    background: radial-gradient(ellipse at center, transparent 0%, transparent 60%, rgba(0,0,0,0.3) 100%);
+}
+
+/* Chip Scatter Animation Classes */
+.chip-row.scatter .poker-chip:nth-child(1) {
+    animation: scatter1 0.8s ease-out forwards;
+}
+
+.chip-row.scatter .poker-chip:nth-child(2) {
+    animation: scatter2 0.8s ease-out forwards;
+}
+
+.chip-row.scatter .poker-chip:nth-child(3) {
+    animation: scatter3 0.8s ease-out forwards;
+}
+
+.chip-row.scatter .poker-chip:nth-child(4) {
+    animation: scatter4 0.8s ease-out forwards;
+}
+
 .animate-fadeIn {
     animation: fadeIn 0.5s ease-in;
 }
