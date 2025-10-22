@@ -1,0 +1,37 @@
+/* Table-specific styles */
+.poker-table {
+    position: relative;
+}
+
+.community-card {
+    transition: all 0.3s ease;
+}
+
+.player-card {
+    transition: all 0.3s ease;
+}
+
+.action-panel {
+    transition: all 0.2s ease;
+}
+
+.action-button {
+    transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.4);
+}
+
+.dealer-container {
+    transition: all 0.3s ease;
+}
+
+.dealer-image {
+    transition: all 0.3s ease;
+}
+
+.dealer-image:hover {
+    transform: scale(1.05);
+}
