@@ -1,7 +1,18 @@
 /* Import our pixel styles */
-/* @import url('./pixel-style.css'); */
-/* @import url('./clean-table.css'); */
-/* @import url('./projects-style.css'); */
+@import url('./pixel-style.css');
+@import url('./table-style.css');
+@import url('./projects-style.css');
+@import url('./hand-style.css');
+
+/* Global pixel font styling */
+body {
+    font-family: 'Press Start 2P', cursive;
+    image-rendering: pixelated;
+}
+
+* {
+    image-rendering: pixelated;
+}
 
 #blazor-error-ui {
     background: lightyellow;
