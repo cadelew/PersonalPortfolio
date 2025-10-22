@@ -1,0 +1,9 @@
+{
+  "buildCommand": "echo 'Static files already built'",
+  "outputDirectory": "dist",
+  "installCommand": "echo 'No install needed'",
+  "framework": null,
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}

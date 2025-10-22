@@ -1,0 +1,172 @@
+/* Projects-specific styles */
+.projects-overlay {
+    min-height: 100vh;
+    background: linear-gradient(45deg, #0f3d1a, #2d1b0e);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.projects-container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.projects-cards {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.project-card {
+    width: 300px;
+    min-height: 500px;
+    background: white;
+    border: 8px solid black;
+    border-radius: 16px;
+    padding: 20px;
+    padding-bottom: 40px;
+    position: relative;
+    color: black;
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8);
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-corner {
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.top-left {
+    top: 8px;
+    left: 8px;
+    color: black;
+}
+
+.bottom-right {
+    bottom: 8px;
+    right: 8px;
+    color: black;
+    transform: rotate(180deg);
+}
+
+.project-icon {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.project-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+    border-bottom: 4px solid black;
+    padding-bottom: 5px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.project-description {
+    font-size: 11px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    min-height: 60px;
+}
+
+.tech-stack {
+    margin-bottom: 8px;
+}
+
+.tech-label {
+    font-size: 10px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.tech-bar {
+    background: #2d1b0e;
+    border: 2px solid black;
+    padding: 8px;
+    color: #ffcc00;
+    font-size: 10px;
+    text-align: center;
+}
+
+.github-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background: black;
+    border: 2px solid #666;
+    color: white;
+    font-size: 10px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    margin-bottom: 8px;
+}
+
+.tech-stack {
+    margin-bottom: 8px;
+    margin-top: auto;
+}
+
+.github-link:hover {
+    background: #333;
+}
+
+.back-to-table-btn {
+    background-color: #ffcc00;
+    color: #0f3d1a;
+    border: 3px solid #2d1b0e;
+    padding: 12px 24px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.back-to-table-btn:hover {
+    background-color: #f5deb3;
+    border-color: #ffcc00;
+}
+
+.card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.locked-overlay {
+    position: absolute;
+    inset: 0;
+    background: #0b0b0b;
+    color: #ffcc00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 8px;
+    pointer-events: all;
+    cursor: not-allowed;
+}
+
+.locked-message {
+    padding: 10px 12px;
+    border: 2px solid #ffcc00;
+    background: #2d1b0e;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+    font-size: 11px;
+}
