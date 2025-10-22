@@ -14,44 +14,48 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
-    
+
     - name: Restore dependencies
       run: dotnet restore
-    
+
     - name: Build and publish
       run: dotnet publish -c Release -o dist
-    
+
     - name: Copy wwwroot contents
       run: |
         if [ -d "dist/wwwroot" ]; then
           cp -r dist/wwwroot/* dist/
           rm -rf dist/wwwroot
         fi
-    
+
     - name: List dist contents
       run: ls -la dist/
-    
+
     - name: Setup Pages
       uses: actions/configure-pages@v4
-    
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
         path: './dist'
-    
+
+  deploy:
+    environment:
+      name: github-pages    # ✅ required by GitHub Pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
