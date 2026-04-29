@@ -1,37 +1,576 @@
-/* Table-specific styles */
-.poker-table {
+/* =========================================================
+   Table page styles (desktop-anchored, responsive overrides)
+   ---------------------------------------------------------
+   Desktop layout (default rules):
+   - .table-page fills the viewport with the forest backdrop.
+   - .poker-table is absolutely anchored to the bottom 60vh.
+   - Dealer + nameplates are absolutely positioned children
+     of .poker-table with negative offsets so they appear to
+     sit on / above the felt edge (matches original).
+   - Left/right side panels are absolutely positioned inside
+     the felt; the center column is the only in-flow child.
+
+   Responsive overrides (<= 1024px):
+   - .poker-table reverts to in-flow grid stacking.
+   - Dealer / nameplates / side panels become grid items.
+   ========================================================= */
+
+/* ---------- Page shell ---------- */
+.table-page {
     position: relative;
+    height: 100vh;
+    height: 100dvh;
+    background-image: url('../images/forestbackground2.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
 }
 
-.community-card {
-    transition: all 0.3s ease;
+/* ---------- Retro CRT / glitch overlays ---------- */
+.retro-vignette,
+.retro-glitch,
+.retro-flicker,
+.retro-scanlines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
 }
 
-.player-card {
-    transition: all 0.3s ease;
+.retro-vignette {
+    z-index: 9996;
+    background: radial-gradient(ellipse at center,
+        transparent 0%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.6) 100%);
 }
 
-.action-panel {
-    transition: all 0.2s ease;
+.retro-glitch {
+    z-index: 9997;
+    background: transparent;
+    animation: glitch 2s infinite;
 }
 
-.action-button {
-    transition: all 0.2s ease;
+.retro-flicker {
+    z-index: 9998;
+    background: rgba(255, 255, 255, 0.02);
+    animation: flicker 0.15s infinite linear;
 }
 
-.action-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 4px 4px 8px rgba(0,0,0,0.4);
+.retro-scanlines {
+    z-index: 9999;
+    background: repeating-linear-gradient(0deg,
+        rgba(0, 0, 0, 0.15) 0px,
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px);
+    animation: scanline 8s linear infinite;
 }
 
-.dealer-container {
-    transition: all 0.3s ease;
+/* ---------- Poker Table (desktop: anchored bottom 60vh) ---------- */
+.poker-table {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60vh;
+    background: #0f3d1a;
+    border: 8px solid #8B4513;
+    box-shadow:
+        inset 0 0 30px rgba(0, 0, 0, 0.3),
+        0 8px 16px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.felt-overlay {
+    position: absolute;
+    inset: 20px;
+    background: repeating-linear-gradient(45deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.03) 2px,
+        rgba(255, 255, 255, 0.03) 4px);
+    pointer-events: none;
+}
+
+/* ---------- Nameplates (desktop: floating above felt) ---------- */
+.nameplate {
+    position: absolute;
+    top: -150px;
+    text-align: center;
+    color: #ffcc00;
+    font-size: 36px;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+    line-height: 1.1;
+    z-index: 25;
+}
+
+.nameplate-left {
+    left: 50px;
+}
+
+.nameplate-right {
+    right: 50px;
+}
+
+/* ---------- Dealer (desktop: anchored to top edge of felt) ---------- */
+.dealer-wrapper {
+    position: absolute;
+    top: -285px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
 }
 
 .dealer-image {
-    transition: all 0.3s ease;
+    width: 220px;
+    height: 300px;
+    image-rendering: pixelated;
+    object-fit: contain;
+    filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.4));
+    position: relative;
+    z-index: 30;
+    transition: transform 0.3s ease;
 }
 
 .dealer-image:hover {
     transform: scale(1.05);
+}
+
+/* ---------- Side zones ---------- */
+.table-zone {
+    display: flex;
+    flex-direction: column;
+}
+
+.table-zone-left {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 320px;
+    gap: 12px;
+    z-index: 12;
+}
+
+.table-zone-right {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 12;
+}
+
+.table-zone-center {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+}
+
+/* ---------- Dealer dialogue + instructions ---------- */
+.dealer-dialogue,
+.instructions-panel {
+    padding: 12px 16px;
+    border: 2px solid #ffcc00;
+    border-radius: 6px;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+    font-size: 10px;
+    line-height: 1.5;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.dealer-dialogue {
+    background: #2d1b0e;
+    color: #ffcc00;
+    text-align: left;
+}
+
+.instructions-panel {
+    background: #1b1009;
+    color: #f5deb3;
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.instructions-title {
+    font-weight: bold;
+    color: #ffcc00;
+    margin-bottom: 6px;
+}
+
+.instructions-subtitle {
+    color: #ffcc00;
+    font-weight: bold;
+    margin: 8px 0 6px;
+}
+
+.instructions-subtitle:first-of-type {
+    margin-top: 0;
+}
+
+.instructions-panel ul {
+    margin: 0;
+    padding-left: 16px;
+    line-height: 1.4;
+}
+
+.instructions-panel .hl {
+    color: #ffcc00;
+}
+
+/* ---------- Community + player cards ---------- */
+.community-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.community-card {
+    width: 72px;
+    height: 104px;
+    border: 4px solid #ffcc00;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    opacity: 0.3;
+    overflow: hidden;
+}
+
+.community-card.dealt {
+    opacity: 1;
+}
+
+.community-card img {
+    width: 64px;
+    height: 96px;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+.player-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.player-card {
+    width: 88px;
+    height: 120px;
+    border: 4px solid #ffcc00;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.player-card img {
+    width: 80px;
+    height: 112px;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+/* ---------- View Cards CTA ---------- */
+.viewcards-button {
+    margin-top: 8px;
+    padding: 8px 16px;
+    border: 2px solid #ffcc00;
+    border-radius: 4px;
+    background: #1a3a8a;
+    color: #ffcc00;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Press Start 2P', cursive;
+    box-shadow: 3px 3px 0px #8B4513;
+}
+
+/* ---------- Action panel (desktop: content-sized) ---------- */
+.action-panel {
+    padding: 10px;
+    border: 3px solid #ffcc00;
+    border-radius: 10px;
+    background: #2d1b0e;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.action-panel button {
+    padding: 8px 14px;
+    border: 2px solid #ffcc00;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    transition: all 0.15s ease;
+    box-shadow: 3px 3px 0px #8B4513;
+    color: #ffcc00;
+    font-family: 'Press Start 2P', cursive;
+    line-height: 1.3;
+}
+
+.viewhand-button {
+    padding: 8px 12px;
+    line-height: 1.3;
+}
+
+.check-button { background: #1a8a1a; }
+.fold-button { background: #8a1a1a; }
+.allin-button { background: #8a5a1a; }
+.viewhand-button { background: #1a3a8a; }
+
+/* ---------- Shared button interaction ---------- */
+.pixel-button {
+    transition: all 0.15s ease;
+    transform: scale(1);
+}
+
+.pixel-button:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 5px 5px 0px #8B4513;
+}
+
+.pixel-button:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 2px 2px 0px #8B4513;
+}
+
+/* =========================================================
+   Breakpoints
+   ========================================================= */
+
+/* ---------- Small desktop / large laptop (<= 1280px) ---------- */
+@media (max-width: 1280px) and (min-width: 1025px) {
+    .nameplate {
+        font-size: 28px;
+        top: -120px;
+    }
+
+    .nameplate-left { left: 30px; }
+    .nameplate-right { right: 30px; }
+
+    .dealer-wrapper {
+        top: -240px;
+        width: 240px;
+        height: 310px;
+    }
+
+    .dealer-image {
+        width: 190px;
+        height: 260px;
+    }
+
+    .table-zone-left { max-width: 280px; }
+}
+
+/* ---------- Short desktop viewport safety ---------- */
+@media (min-width: 1025px) and (max-height: 760px) {
+    .poker-table { height: 62vh; }
+
+    .nameplate {
+        font-size: 24px;
+        top: -100px;
+    }
+
+    .dealer-wrapper {
+        top: -210px;
+        width: 220px;
+        height: 280px;
+    }
+
+    .dealer-image {
+        width: 170px;
+        height: 230px;
+    }
+}
+
+/* ---------- Tablet + mobile: revert to in-flow stacking ---------- */
+@media (max-width: 1024px) {
+    .table-page {
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow: visible;
+        overflow-x: hidden;
+    }
+
+    .poker-table {
+        position: static;
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        grid-template-areas:
+            "leftname dealer  rightname"
+            "center   center  center"
+            "left     left    left"
+            "right    right   right";
+        align-items: center;
+        justify-items: center;
+        padding: clamp(16px, 4vw, 24px) clamp(12px, 3vw, 20px);
+        gap: clamp(14px, 3vw, 20px);
+    }
+
+    .felt-overlay {
+        inset: 12px;
+    }
+
+    .nameplate,
+    .dealer-wrapper,
+    .table-zone-left,
+    .table-zone-right {
+        position: static;
+        transform: none;
+        top: auto;
+        left: auto;
+        right: auto;
+    }
+
+    .nameplate {
+        font-size: clamp(12px, 3.2vw, 22px);
+        text-align: center;
+    }
+
+    .nameplate-left {
+        grid-area: leftname;
+        justify-self: start;
+    }
+
+    .nameplate-right {
+        grid-area: rightname;
+        justify-self: end;
+        text-align: right;
+    }
+
+    .dealer-wrapper {
+        grid-area: dealer;
+        width: clamp(96px, 22vw, 160px);
+        height: auto;
+        aspect-ratio: 220 / 300;
+    }
+
+    .dealer-image {
+        width: 100%;
+        height: 100%;
+    }
+
+    .table-zone-left {
+        grid-area: left;
+        max-width: 100%;
+        width: 100%;
+        align-self: stretch;
+        justify-self: stretch;
+    }
+
+    .table-zone-center {
+        grid-area: center;
+        align-self: center;
+    }
+
+    .table-zone-right {
+        grid-area: right;
+        align-self: center;
+        justify-self: center;
+    }
+
+    .action-panel {
+        max-width: min(420px, 100%);
+        width: 100%;
+    }
+
+    .action-panel button {
+        font-size: clamp(10px, 2.4vw, 12px);
+        padding: 12px 14px;
+    }
+
+    .community-row {
+        gap: clamp(6px, 1.5vw, 12px);
+        flex-wrap: wrap;
+    }
+
+    .community-card {
+        width: clamp(46px, 12vw, 72px);
+        height: auto;
+        aspect-ratio: 72 / 104;
+    }
+
+    .community-card img {
+        width: 88%;
+        height: 92%;
+    }
+
+    .player-card {
+        width: clamp(64px, 18vw, 88px);
+        height: auto;
+        aspect-ratio: 88 / 120;
+    }
+
+    .player-card img {
+        width: 90%;
+        height: 93%;
+    }
+
+    .dealer-dialogue,
+    .instructions-panel {
+        font-size: clamp(9px, 2.2vw, 11px);
+    }
+
+    .viewcards-button {
+        font-size: clamp(10px, 2.6vw, 12px);
+        padding: 10px 16px;
+    }
+}
+
+/* ---------- Small mobile (<= 480px) ---------- */
+@media (max-width: 480px) {
+    .poker-table {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "leftname rightname"
+            "dealer   dealer"
+            "center   center"
+            "left     left"
+            "right    right";
+        border-width: 6px;
+    }
+
+    .nameplate {
+        font-size: clamp(11px, 3.8vw, 14px);
+    }
+
+    .nameplate-left {
+        grid-area: leftname;
+        justify-self: start;
+    }
+
+    .nameplate-right {
+        grid-area: rightname;
+        justify-self: end;
+    }
+
+    .dealer-wrapper {
+        grid-area: dealer;
+        width: clamp(120px, 38vw, 170px);
+        margin-top: 4px;
+    }
 }

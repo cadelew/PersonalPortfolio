@@ -119,7 +119,7 @@
     color: #666;
 }
 
-.pixel-button {
+.hand-overlay .pixel-button {
     background-color: #ffcc00;
     color: #0f3d1a;
     border: 3px solid #2d1b0e;
@@ -128,7 +128,7 @@
     cursor: pointer;
 }
 
-.pixel-button:hover {
+.hand-overlay .pixel-button:hover {
     background-color: #f5deb3;
     border-color: #ffcc00;
 }

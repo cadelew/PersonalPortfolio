@@ -31,6 +31,12 @@ jobs:
     - name: Build and publish
       run: dotnet publish -c Release -o dist
 
+    - name: Set GitHub Pages base href
+      run: |
+        if [ -f "dist/wwwroot/index.html" ]; then
+          sed -i 's|<base href="/" />|<base href="/PersonalPortfolio/" />|' dist/wwwroot/index.html
+        fi
+
     - name: Copy wwwroot contents
       run: |
         if [ -d "dist/wwwroot" ]; then
